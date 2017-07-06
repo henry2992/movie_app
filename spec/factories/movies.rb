@@ -1,10 +1,10 @@
 FactoryGirl.define do
   factory :movie do
-    title "MyString"
-    studio "MyString"
-    date ""
-    price 1.5
-    rating 1.5
-    genre "MyString"
+    title "Start Wars"
+    studio "Lucas Film"
+    date Date.today
+    price 11.50
+    rating 10
+    genre "Action"
   end
 end
