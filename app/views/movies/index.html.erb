@@ -1,6 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Movies</h1>
+<%= link_to 'New Movie', new_movie_path %>
 
 <%= simple_form_for :file, url: movie_import_path, defaults: { input_html: { class: 'new-fax' } } do |f| %>
   <p>Attach Document (Max 1MB)</p>
@@ -37,7 +38,6 @@
     <% end %>
   </tbody>
 </table>
-
 <br>
+<%= will_paginate @movies %>
 
-<%= link_to 'New Movie', new_movie_path %>
