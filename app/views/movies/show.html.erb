@@ -30,12 +30,20 @@
   <%= @movie.genre %>
 </p>
 
+<h4>Reviews:</h4>
 
-<%= simple_form_for :review do |f| %>
+<% @movie.reviews.each do |review| %>
+  <p>--------------------</p>
+  <p><%= review.comment %></p>
+  <p><%= review.rating %></p>
+  <p>--------------------</p>
+<% end %>
+
+
+<%= simple_form_for :review, url: movie_reviews_path(@movie) do |f| %>
   <%= f.input :comment  %>
   <%= f.input :rating  %>
   <%= f.button :submit, 'Make Comment'%>  
-
 <% end %>
 
 
