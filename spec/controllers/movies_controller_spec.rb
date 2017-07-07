@@ -52,65 +52,55 @@ RSpec.describe MoviesController, type: :controller do
             }
         }.to change(Movie, :count).by(1)
       end
+
+      it "redirects to the created movie" do
+        post :create, params:  
+          { 
+            movie: {
+              title: 'Advanced Classical Music',
+            },
+          }
+        expect(response).to redirect_to(Movie.last)
+      end
     end
-      
-
-      # it "redirects to the created movie" do
-      #   post :create, params: {movie: valid_attributes}, session: valid_session
-      #   expect(response).to redirect_to(Movie.last)
-      # end
-    # end
-
-    # context "with invalid params" do
-    #   it "returns a success response (i.e. to display the 'new' template)" do
-    #     post :create, params: {movie: invalid_attributes}, session: valid_session
-    #     expect(response).to be_success
-    #   end
-    # end
   end
 
-  # describe "PUT #update" do
-  #   context "with valid params" do
-  #     let(:new_attributes) {
-  #       skip("Add a hash of attributes valid for your model")
-  #     }
+  describe "PUT #update" do
+    context "with valid params" do
+      let(:new_attributes) {
+        { 
+          title: 'New Title'
+        }
+      }
 
-  #     it "updates the requested movie" do
-  #       movie = Movie.create! valid_attributes
-  #       put :update, params: {id: movie.to_param, movie: new_attributes}, session: valid_session
-  #       movie.reload
-  #       skip("Add assertions for updated state")
-  #     end
+      it "updates the requested movie" do
+        movie = FactoryGirl.create(:movie)
+        put :update, params: {id: movie.id, movie: new_attributes}
+        movie.reload
+        expect(movie.title).to eq('New Title')
+      end
 
-  #     it "redirects to the movie" do
-  #       movie = Movie.create! valid_attributes
-  #       put :update, params: {id: movie.to_param, movie: valid_attributes}, session: valid_session
-  #       expect(response).to redirect_to(movie)
-  #     end
-  #   end
+      it "redirects to the movie" do
+        movie = FactoryGirl.create(:movie)
+        put :update, params: {id: movie.id, movie: new_attributes}
+        expect(response).to redirect_to(movie)
+      end
+    end
+  end
 
-  #   context "with invalid params" do
-  #     it "returns a success response (i.e. to display the 'edit' template)" do
-  #       movie = Movie.create! valid_attributes
-  #       put :update, params: {id: movie.to_param, movie: invalid_attributes}, session: valid_session
-  #       expect(response).to be_success
-  #     end
-  #   end
-  # end
+  describe "DELETE #destroy" do
+    it "destroys the requested movie" do
+      movie = FactoryGirl.create(:movie)
+      expect {
+        delete :destroy, params: {id: movie.id}
+      }.to change(Movie, :count).by(-1)
+    end
 
-  # describe "DELETE #destroy" do
-  #   it "destroys the requested movie" do
-  #     movie = Movie.create! valid_attributes
-  #     expect {
-  #       delete :destroy, params: {id: movie.to_param}, session: valid_session
-  #     }.to change(Movie, :count).by(-1)
-  #   end
-
-  #   it "redirects to the movies list" do
-  #     movie = Movie.create! valid_attributes
-  #     delete :destroy, params: {id: movie.to_param}, session: valid_session
-  #     expect(response).to redirect_to(movies_url)
-  #   end
-  # end
+    it "redirects to the movies list" do
+      movie = FactoryGirl.create(:movie)
+      delete :destroy, params: {id: movie.id}
+      expect(response).to redirect_to(movies_url)
+    end
+  end
 
 end
