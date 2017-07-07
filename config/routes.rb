@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   
   root 'movies#index'
-  resources :movies
+  resources :movies do 
+  	resources :reviews, only: [:create]
+  end
 
   post '/movies/import', to: 'movies#import', as: 'movie_import'
 
