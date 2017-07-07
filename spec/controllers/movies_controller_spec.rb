@@ -42,24 +42,26 @@ RSpec.describe MoviesController, type: :controller do
   describe "POST #create" do
     
     context "with valid attributes" do
+
+      let(:valid_attributes) {
+        { 
+          title: 'New Title',
+          studio: "Lucas Film",
+          date: Date.today,
+          price: 11.50,
+          rating: 10,
+          genre: "Action",
+        }
+      }
+
       it "creates a new Movie" do
         expect {
-           post :create, params: 
-            { 
-              movie: {
-                title: 'Advanced Classical Music',
-              },
-            }
+           post :create, params: { movie: valid_attributes }
         }.to change(Movie, :count).by(1)
       end
 
       it "redirects to the created movie" do
-        post :create, params:  
-          { 
-            movie: {
-              title: 'Advanced Classical Music',
-            },
-          }
+        post :create, params: { movie: valid_attributes }
         expect(response).to redirect_to(Movie.last)
       end
     end
