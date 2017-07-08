@@ -9,5 +9,6 @@ RSpec.describe Review, type: :model do
 
   describe Review, 'associations' do
     it { should belong_to(:movie) }
+    it { should belong_to(:user) }
   end
 end

@@ -1,14 +1,13 @@
 Rails.application.routes.draw do
   
-  get 'reviews/create'
-
   root 'movies#index'
   resources :movies do 
-  	resources :reviews, only: [:create]
+  	resources :reviews, only: [:create] do 
+  		post 'comment', to: 'reviews#related_comments'
+  	end
   end
 
   post '/movies/import', to: 'movies#import', as: 'movie_import'
 
   devise_for :users
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

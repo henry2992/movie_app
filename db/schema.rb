@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170707043033) do
+ActiveRecord::Schema.define(version: 20170708184733) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,10 +20,18 @@ ActiveRecord::Schema.define(version: 20170707043033) do
     t.string "studio"
     t.date "date"
     t.float "price"
-    t.float "rating"
+    t.float "rating", default: 0.0
     t.string "genre"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "related_review", force: :cascade do |t|
+    t.bigint "review_parent_id", null: false
+    t.bigint "review_child_id", null: false
+    t.index ["review_child_id"], name: "index_related_review_on_review_child_id"
+    t.index ["review_parent_id", "review_child_id"], name: "index_related_review_on_review_parent_id_and_review_child_id", unique: true
+    t.index ["review_parent_id"], name: "index_related_review_on_review_parent_id"
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -32,6 +40,7 @@ ActiveRecord::Schema.define(version: 20170707043033) do
     t.bigint "movie_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
     t.index ["movie_id"], name: "index_reviews_on_movie_id"
   end
 
@@ -52,4 +61,6 @@ ActiveRecord::Schema.define(version: 20170707043033) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "related_review", "reviews", column: "review_child_id"
+  add_foreign_key "related_review", "reviews", column: "review_parent_id"
 end

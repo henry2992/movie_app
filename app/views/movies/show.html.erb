@@ -30,22 +30,34 @@
   <%= @movie.genre %>
 </p>
 
-<h4>Reviews:</h4>
-
-<% @movie.reviews.each do |review| %>
-  <p>--------------------</p>
-  <p><%= review.comment %></p>
-  <p><%= review.rating %></p>
-  <p>--------------------</p>
-<% end %>
-
-
+<h4>Make a Comment</h4>
 <%= simple_form_for :review, url: movie_reviews_path(@movie) do |f| %>
   <%= f.input :comment  %>
   <%= f.input :rating  %>
   <%= f.button :submit, 'Make Comment'%>  
 <% end %>
 
+<h2>Reviews:</h2>
+<p>--------------------</p>
+
+<% @movie.reviews.each do |review| %>
+  <h3>Comment by: <%= review.user.email %></h3>
+  <p>Date: <%= review.created_at.strftime("%Y/%m/%d") %></p>
+  <p>Comment: <%= review.comment %></p>
+  <p>Rating: <%= review.rating %></p>
+  <br>
+  <h4>Comments on this review:</h4>
+  <% review.related_review.each do |related_review| %>
+    <p><%= related_review.comment %> by: <%= related_review.user.email %><p>
+  <% end %>
+  <p>Comment this comment: </p>
+  <%= simple_form_for :review_comment, url: movie_review_comment_path(@movie, review) do |f| %>
+    <%= f.input :comment  %>
+    <%= f.button :submit, 'Make Comment'%>  
+  <% end %>
+
+  <p>--------------------</p>
+<% end %>
 
 
 <%= link_to 'Edit', edit_movie_path(@movie) %> |
