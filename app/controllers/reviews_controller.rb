@@ -13,8 +13,6 @@ class ReviewsController < ApplicationController
   end
 
   def related_comments
-    byebug
-
     related_review = Review.create!(comment: review_comment[:comment], rating: 0.1, user_id: current_user.id)
     review = Review.find(params[:review_id])
     review.related_review << related_review
@@ -23,7 +21,6 @@ class ReviewsController < ApplicationController
     else
       redirect_to @movie, notice: review.errors.full_messages
     end
-
   end
 
   private
